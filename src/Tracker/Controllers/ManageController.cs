@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using Tracker.Models;
-using Tracker.Services;
-using Tracker.ViewModels.Manage;
+using ShatteredTemple.LegoDimensions.Tracker.Models;
+using ShatteredTemple.LegoDimensions.Tracker.Services;
+using ShatteredTemple.LegoDimensions.Tracker.ViewModels.Manage;
 
-namespace Tracker.Controllers
+namespace ShatteredTemple.LegoDimensions.Tracker.Controllers
 {
     [Authorize]
     public class ManageController : Controller

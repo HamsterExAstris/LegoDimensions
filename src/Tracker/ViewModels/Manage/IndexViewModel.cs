@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 
-namespace Tracker.ViewModels.Manage
+namespace ShatteredTemple.LegoDimensions.Tracker.ViewModels.Manage
 {
     public class IndexViewModel
     {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Tracker.ViewModels.Manage
+namespace ShatteredTemple.LegoDimensions.Tracker.ViewModels.Manage
 {
     public class VerifyPhoneNumberViewModel
     {

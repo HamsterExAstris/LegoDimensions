@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
-using Tracker.Models;
+using ShatteredTemple.LegoDimensions.Tracker.Models;
 
-namespace Tracker.Migrations
+namespace ShatteredTemple.LegoDimensions.Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -16,7 +13,7 @@ namespace Tracker.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-beta8")
+                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
@@ -49,7 +46,8 @@ namespace Tracker.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -65,7 +63,8 @@ namespace Tracker.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -80,7 +79,8 @@ namespace Tracker.Migrations
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -98,7 +98,17 @@ namespace Tracker.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Tracker.Models.ApplicationUser", b =>
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.Ability", b =>
+                {
+                    b.Property<int>("AbilityId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("LongDesc");
+
+                    b.HasKey("AbilityId");
+                });
+
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -146,6 +156,53 @@ namespace Tracker.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUsers");
                 });
 
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.Figure", b =>
+                {
+                    b.Property<int>("FigureId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("FranchiseType");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("PackId");
+
+                    b.HasKey("FigureId");
+                });
+
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.FigureAbility", b =>
+                {
+                    b.Property<int>("AbilityId");
+
+                    b.Property<int>("FigureId");
+
+                    b.HasKey("AbilityId", "FigureId");
+                });
+
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.Pack", b =>
+                {
+                    b.Property<int>("PackId");
+
+                    b.Property<int>("FranchiseType");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("PackType");
+
+                    b.Property<int?>("WaveId");
+
+                    b.HasKey("PackId");
+                });
+
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.Wave", b =>
+                {
+                    b.Property<int>("WaveId");
+
+                    b.Property<DateTime?>("ReleaseDate");
+
+                    b.HasKey("WaveId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNet.Identity.EntityFramework.IdentityRole")
@@ -155,14 +212,14 @@ namespace Tracker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Tracker.Models.ApplicationUser")
+                    b.HasOne("ShatteredTemple.LegoDimensions.Tracker.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Tracker.Models.ApplicationUser")
+                    b.HasOne("ShatteredTemple.LegoDimensions.Tracker.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
@@ -173,9 +230,34 @@ namespace Tracker.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
-                    b.HasOne("Tracker.Models.ApplicationUser")
+                    b.HasOne("ShatteredTemple.LegoDimensions.Tracker.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.Figure", b =>
+                {
+                    b.HasOne("ShatteredTemple.LegoDimensions.Tracker.Models.Pack")
+                        .WithMany()
+                        .HasForeignKey("PackId");
+                });
+
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.FigureAbility", b =>
+                {
+                    b.HasOne("ShatteredTemple.LegoDimensions.Tracker.Models.Ability")
+                        .WithMany()
+                        .HasForeignKey("AbilityId");
+
+                    b.HasOne("ShatteredTemple.LegoDimensions.Tracker.Models.Figure")
+                        .WithMany()
+                        .HasForeignKey("FigureId");
+                });
+
+            modelBuilder.Entity("ShatteredTemple.LegoDimensions.Tracker.Models.Pack", b =>
+                {
+                    b.HasOne("ShatteredTemple.LegoDimensions.Tracker.Models.Wave")
+                        .WithMany()
+                        .HasForeignKey("WaveId");
                 });
         }
     }

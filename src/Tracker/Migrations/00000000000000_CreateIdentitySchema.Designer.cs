@@ -6,9 +6,9 @@ using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
-using Tracker.Models;
+using ShatteredTemple.LegoDimensions.Tracker.Models;
 
-namespace Tracker.Migrations
+namespace ShatteredTemple.LegoDimensions.Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]

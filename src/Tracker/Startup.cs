@@ -88,6 +88,12 @@ namespace ShatteredTemple.LegoDimensions.Tracker
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
+            app.UseFacebookAuthentication(options =>
+            {
+                options.AppId = Configuration["Authentication:Facebook:AppId"];
+                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

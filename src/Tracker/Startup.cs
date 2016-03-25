@@ -80,6 +80,8 @@ namespace ShatteredTemple.LegoDimensions.Tracker
                 catch { }
             }
 
+            this.Seed(app);
+
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             app.UseStaticFiles();
@@ -100,6 +102,24 @@ namespace ShatteredTemple.LegoDimensions.Tracker
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        /// <summary>
+        /// Seed any necessary metadata in the database.
+        /// </summary>
+        private void Seed(IApplicationBuilder app)
+        {
+            try
+            {
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope())
+                {
+                    var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                    var seeder = new SeedData(context);
+                    seeder.SeedContext();
+                }
+            }
+            catch { }
         }
 
         // Entry point for the application.

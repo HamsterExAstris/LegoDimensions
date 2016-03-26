@@ -35,15 +35,6 @@ namespace ShatteredTemple.LegoDimensions.Tracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Configure ELM first in hopes it can capture errors from later
-            // services.
-            services.AddElm();
-            services.ConfigureElm(configureOptions =>
-            {
-                configureOptions.Path = new PathString("/elm");
-                configureOptions.Filter = (name, logLevel) => (logLevel >= LogLevel.Verbose);
-            });
-
             // Add framework services.
             services.AddEntityFramework()
                 .AddSqlServer()
@@ -70,7 +61,7 @@ namespace ShatteredTemple.LegoDimensions.Tracker
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -112,10 +103,6 @@ namespace ShatteredTemple.LegoDimensions.Tracker
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            // Set up our ELM routes.
-            app.UseElmPage();
-            app.UseElmCapture();
         }
 
         /// <summary>

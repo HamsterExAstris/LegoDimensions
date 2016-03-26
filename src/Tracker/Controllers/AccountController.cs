@@ -120,7 +120,9 @@ namespace ShatteredTemple.LegoDimensions.Tracker.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                        "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+                        "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>", true,
+                        "Please confirm your account by going to this URL: " + callbackUrl,
+                        "Account/Register");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToAction(nameof(HomeController.Index), "Home");
@@ -279,7 +281,9 @@ namespace ShatteredTemple.LegoDimensions.Tracker.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>", true,
+                   "Please reset your password by going to this URL: " + callbackUrl,
+                   "Account/ForgotPassword");
                 return View("ForgotPasswordConfirmation");
             }
 
@@ -384,7 +388,7 @@ namespace ShatteredTemple.LegoDimensions.Tracker.Controllers
             var message = "Your security code is: " + code;
             if (model.SelectedProvider == "Email")
             {
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
+                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message, false, null, "Account/SendCode");
             }
             else if (model.SelectedProvider == "Phone")
             {

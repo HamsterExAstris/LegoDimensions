@@ -16,6 +16,7 @@
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
     "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
     "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Server.Kestrel.Https": "1.0.0-rc1-final",
     "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
     "Microsoft.AspNet.Tooling.Razor": "1.0.0-rc1-final",
     "Microsoft.Extensions.CodeGenerators.Mvc": "1.0.0-rc1-final",
@@ -30,6 +31,7 @@
 
   "commands": {
     "web": "Microsoft.AspNet.Server.Kestrel",
+    "webdev": "Microsoft.AspNet.Server.Kestrel --ASPNET_ENV=Development --server.urls=https://localhost:44350",
     "ef": "EntityFramework.Commands"
   },
 

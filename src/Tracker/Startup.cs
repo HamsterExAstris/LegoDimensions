@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Server.Kestrel.Https;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +50,7 @@ namespace ShatteredTemple.LegoDimensions.Tracker
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.Configure<MvcOptions>(config => config.Filters.Add(new RequireHttpsAttribute()));
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -61,8 +66,31 @@ namespace ShatteredTemple.LegoDimensions.Tracker
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                // Configure HTTPS if possible.
+                var certStore = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                certStore.Open(OpenFlags.ReadOnly);
+                var cert = certStore.Certificates.OfType<X509Certificate2>()
+                    .Where(c => c.NotBefore <= DateTime.UtcNow
+                        && c.NotAfter >= DateTime.UtcNow
+                        && c.SubjectName.Name == "CN=localhost")
+                    .FirstOrDefault();
+                if (cert != null)
+                {
+                    // Add workaround for URL scheme needed in ASP.NET Core RC1.
+                    // This is fixed in RC2.
+                    app.Use(Startup.ChangeContextToHttps);
+
+                    // Wire up our certificate.
+                    app.UseKestrelHttps(cert);
+                }
+                else
+                {
+                    loggerFactory.CreateLogger<Startup>().LogWarning("Could not find X509 certificate for localhost. Skipping HTTPS configuration.");
+                }
+                certStore.Close();
             }
             else
             {
@@ -103,6 +131,15 @@ namespace ShatteredTemple.LegoDimensions.Tracker
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private static RequestDelegate ChangeContextToHttps(RequestDelegate next)
+        {
+            return async context =>
+            {
+                context.Request.Scheme = "https";
+                await next(context);
+            };
         }
 
         /// <summary>

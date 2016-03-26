@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Server.Kestrel.Https;
@@ -124,6 +125,14 @@ namespace ShatteredTemple.LegoDimensions.Tracker
             {
                 options.AppId = Configuration["Authentication:Facebook:AppId"];
                 options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+            app.UseGoogleAuthentication(options =>
+            {
+                options.AuthorizationEndpoint = this.Configuration["Authentication:Google:AuthorizationEndpoint"];
+                options.CallbackPath = new PathString("/Account/ExternalLoginCallback");
+                options.ClientId = this.Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = this.Configuration["Authentication:Google:ClientSecret"];
+                options.TokenEndpoint = this.Configuration["Authentication:Google:TokenEndpoint"];
             });
 
             app.UseMvc(routes =>

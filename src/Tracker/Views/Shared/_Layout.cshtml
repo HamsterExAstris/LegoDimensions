@@ -7,6 +7,7 @@
 
         <environment names="Development">
             <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+            <link rel="stylesheet" href="~/lib/metisMenu/dist/metisMenu.css" />
             <link rel="stylesheet" href="~/lib/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" />
             <link rel="stylesheet" href="~/css/site.css" />
         </environment>
@@ -14,13 +15,14 @@
             <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
                   asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
                   asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/lib/metisMenu/dist/metisMenu.min.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/lib/startbootstrap-sb-admin-2/dist/css/sb-admin-2.min.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         </environment>
     </head>
     <body>
         <div id="wrapper">
-            <nav class="navbar navbar-inverse navbar-fixed-top">
+            <nav class="navbar navbar-inverse navbar-static-top" style="margin-bottom: 0;"> @* Override bootstrap default. *@
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -40,6 +42,8 @@
                     </ul>
                 </div>
             </nav>
+        </div>
+        <div id="page-wrapper">
             <div class="container body-content">
                 @RenderBody()
                 <hr />
@@ -53,6 +57,7 @@
         <environment names="Development">
             <script src="~/lib/jquery/dist/jquery.js"></script>
             <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/lib/metisMenu/dist/metisMenu.js"></script>
             <script src="~/lib/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js"></script>
             <script src="~/js/site.js" asp-append-version="true"></script>
         </environment>
@@ -65,6 +70,7 @@
                     asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                     asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
             </script>
+            <script src="~/lib/metisMenu/dist/metisMenu.min.js" asp-append-version="true"></script>
             <script src="~/lib/startbootstrap-sb-admin-2/dist/js/sb-admin-2.min.js" asp-append-version="true"></script>
             <script src="~/js/site.min.js" asp-append-version="true"></script>
         </environment>
